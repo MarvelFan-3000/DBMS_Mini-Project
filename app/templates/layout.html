@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Deadstock Inventory</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container">
+        <a class="brand" href="{{ url_for('items.list_items') }}">Deadstock</a>
+        <ul class="nav">
+          <li><a href="{{ url_for('items.list_items') }}">Items</a></li>
+          <li><a href="{{ url_for('items.create_item') }}">New Item</a></li>
+          <li><a href="{{ url_for('reports.aging_report') }}">Aging Report</a></li>
+        </ul>
+        <form action="{{ url_for('auth.logout') }}" method="post" class="logout-form">
+          <button type="submit">Logout</button>
+        </form>
+      </div>
+    </nav>
+
+    <main class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flashes">
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>
