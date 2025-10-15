@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <h1>{% if item %}Edit Item{% else %}New Item{% endif %}</h1>
+  <form method="post" class="form">
+    <div class="form-row">
+      <label>Item Code</label>
+      <input name="item_code" value="{{ item.item_code if item else '' }}" required />
+    </div>
+    <div class="form-row">
+      <label>Name</label>
+      <input name="name" value="{{ item.name if item else '' }}" required />
+    </div>
+    <div class="form-row">
+      <label>Category</label>
+      <input name="category" value="{{ item.category if item else '' }}" />
+    </div>
+    <div class="form-row">
+      <label>Quantity</label>
+      <input type="number" name="quantity" value="{{ item.quantity if item else 0 }}" min="0" />
+    </div>
+    <div class="form-row">
+      <label>Location</label>
+      <input name="location" value="{{ item.location if item else '' }}" />
+    </div>
+    <div class="form-row">
+      <label>Date of Procurement</label>
+      <input type="date" name="date_of_procurement" value="{{ item.date_of_procurement if item else '' }}" required />
+    </div>
+    <div class="form-row">
+      <label>Disposal Status</label>
+      <select name="disposal_status">
+        {% set current = item.disposal_status if item else 'Active' %}
+        {% for s in ['Active','Obsolete','ToDispose','Disposed'] %}
+          <option value="{{ s }}" {% if current == s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-row">
+      <label>Notes</label>
+      <textarea name="notes">{{ item.notes if item else '' }}</textarea>
+    </div>
+
+    <div class="form-row">
+      <button type="submit">{% if item %}Update{% else %}Create{% endif %}</button>
+      <a class="button" href="{{ url_for('items.list_items') }}">Cancel</a>
+    </div>
+  </form>
+{% endblock %}
