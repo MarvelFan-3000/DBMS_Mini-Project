@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <h1>Items</h1>
+
+  <form method="get" class="filter-form">
+    <input type="text" name="q" placeholder="Search name or code" value="{{ q }}" />
+    <select name="category">
+      <option value="">All Categories</option>
+      {% for c in categories %}
+        <option value="{{ c }}" {% if category == c %}selected{% endif %}>{{ c }}</option>
+      {% endfor %}
+    </select>
+    <select name="location">
+      <option value="">All Locations</option>
+      {% for l in locations %}
+        <option value="{{ l }}" {% if location == l %}selected{% endif %}>{{ l }}</option>
+      {% endfor %}
+    </select>
+    <select name="status">
+      <option value="">All Statuses</option>
+      {% for s in statuses %}
+        <option value="{{ s }}" {% if status == s %}selected{% endif %}>{{ s }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Filter</button>
+    <a class="button" href="{{ url_for('items.list_items') }}">Reset</a>
+  </form>
+
+  <div class="actions">
+    <a class="button primary" href="{{ url_for('items.create_item') }}">+ New Item</a>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Qty</th>
+        <th>Location</th>
+        <th>Procured</th>
+        <th>Status</th>
+        <th>Age (days)</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+        <tr>
+          <td>{{ item.item_code }}</td>
+          <td><a href="{{ url_for('items.view_item', item_id=item.id) }}">{{ item.name }}</a></td>
+          <td>{{ item.category or '-' }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.location or '-' }}</td>
+          <td>{{ item.date_of_procurement }}</td>
+          <td>{{ item.disposal_status }}</td>
+          <td>{{ item.age_days }}</td>
+          <td>
+            <a href="{{ url_for('items.edit_item', item_id=item.id) }}">Edit</a>
+            <form action="{{ url_for('items.delete_item', item_id=item.id) }}" method="post" class="inline">
+              <button type="submit" onclick="return confirm('Delete this item?')">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="9">No items found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

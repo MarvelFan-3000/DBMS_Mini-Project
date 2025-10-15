@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <h1>{{ item.name }}</h1>
+  <div class="detail">
+    <div><strong>Code:</strong> {{ item.item_code }}</div>
+    <div><strong>Category:</strong> {{ item.category or '-' }}</div>
+    <div><strong>Quantity:</strong> {{ item.quantity }}</div>
+    <div><strong>Location:</strong> {{ item.location or '-' }}</div>
+    <div><strong>Procurement Date:</strong> {{ item.date_of_procurement }}</div>
+    <div><strong>Status:</strong> {{ item.disposal_status }}</div>
+    <div><strong>Age (days):</strong> {{ item.age_days }}</div>
+    {% if item.notes %}
+      <div><strong>Notes:</strong> {{ item.notes }}</div>
+    {% endif %}
+  </div>
+  <div class="actions">
+    <a class="button" href="{{ url_for('items.edit_item', item_id=item.id) }}">Edit</a>
+    <a class="button" href="{{ url_for('items.list_items') }}">Back</a>
+  </div>
+{% endblock %}

@@ -1,5 +1,5 @@
 import os
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, render_template
 
 from .config import Config
 from .extensions import db, migrate
@@ -20,16 +20,15 @@ def create_app() -> Flask:
 
     # Register blueprints
     from .auth import auth_bp
-    from .items import items_bp
-    from .reports import reports_bp
+    from .api import api_bp
 
     app.register_blueprint(auth_bp)
-    app.register_blueprint(items_bp)
-    app.register_blueprint(reports_bp)
+    app.register_blueprint(api_bp)
 
     @app.route("/")
     def index():
-        return redirect(url_for("items.list_items"))
+        # Serve React SPA
+        return render_template("index.html")
 
     # Create tables if they don't exist (useful for SQLite dev and first run)
     with app.app_context():

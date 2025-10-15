@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+{% block content %}
+  <h1>Stock Aging Report</h1>
+
+  <div class="report-summary">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Age Bucket</th>
+          <th>Item Count</th>
+          <th>Total Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for label in ordered_labels %}
+          <tr>
+            <td>{{ label }}</td>
+            <td>{{ summary_counts.get(label, 0) }}</td>
+            <td>{{ summary_quantities.get(label, 0) }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>All Items</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Qty</th>
+        <th>Location</th>
+        <th>Procured</th>
+        <th>Status</th>
+        <th>Age (days)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+        <tr>
+          <td>{{ item.item_code }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.category or '-' }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.location or '-' }}</td>
+          <td>{{ item.date_of_procurement }}</td>
+          <td>{{ item.disposal_status }}</td>
+          <td>{{ item.age_days }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="8">No data.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
